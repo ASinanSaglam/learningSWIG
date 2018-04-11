@@ -1,20 +1,71 @@
 #include <iostream> 
 
-double testVar = 5.0;
-
-/* Factorial */
-int fact(int n)
+/* testing numpy array inputting */
+double sumArr(double* arr, int size)
 {
-  if (n <= 1) return 1;
-  else return n*fact(n-1);
+  double sum = 0.;
+
+  for(int i=0;i<size;i++)
+  {
+    sum += arr[i];
+  }
+  return sum;
 }
 
-/* Let's test a variable */
-/*
-int main() 
+double sumArr2(double* arr, int size1, int size2)
 {
-  std::cout << fact(testVar);
-  std::cout << "\n";
-  return 0;
+  double sum = 0.;
+
+  for(int i=0;i<size1;i++)
+  {
+    for(int j=0;j<size2;j++)
+    {
+      int nIndexJ = i * size2 + j;
+      std::cout << arr[nIndexJ] << std::endl;
+      sum += arr[nIndexJ];
+    }
+  }
+  return sum;
 }
-*/
+
+double sumArr3(double* arr, int size1, int size2, int size3)
+{
+  double sum = 0.;
+
+  for(int i=0;i<size1;i++)
+  {
+    for(int j=0;j<size2;j++)
+    {
+      for(int k=0;k<size3;k++)
+      {
+        int nIndexJ = i * size2 + j * size3 + k;
+        std::cout << arr[nIndexJ] << std::endl;
+        sum += arr[nIndexJ];
+      }
+    }
+  }
+  return sum;
+}
+
+double modArr(double* arr, int size1, int size2, int size3)
+{
+  double sum = 0.;
+
+  for(int i=0;i<size1;i++)
+  {
+    for(int j=0;j<size2;j++)
+    {
+      for(int k=0;k<size3;k++)
+      {
+        int nIndexJ = i * size2 + j * size3 + k;
+        if(i%10)
+        {
+          arr[nIndexJ] = 0;
+        }
+        std::cout << arr[nIndexJ] << std::endl;
+        sum += arr[nIndexJ];
+      }
+    }
+  }
+  return sum;
+}
