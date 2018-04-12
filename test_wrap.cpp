@@ -3605,9 +3605,67 @@ namespace swig {
 
   #define SWIG_From_double   PyFloat_FromDouble 
 
+
+SWIGINTERN int
+SWIG_AsVal_double (PyObject *obj, double *val)
+{
+  int res = SWIG_TypeError;
+  if (PyFloat_Check(obj)) {
+    if (val) *val = PyFloat_AsDouble(obj);
+    return SWIG_OK;
+#if PY_VERSION_HEX < 0x03000000
+  } else if (PyInt_Check(obj)) {
+    if (val) *val = (double) PyInt_AsLong(obj);
+    return SWIG_OK;
+#endif
+  } else if (PyLong_Check(obj)) {
+    double v = PyLong_AsDouble(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_OK;
+    } else {
+      PyErr_Clear();
+    }
+  }
+#ifdef SWIG_PYTHON_CAST_MODE
+  {
+    int dispatch = 0;
+    double d = PyFloat_AsDouble(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = d;
+      return SWIG_AddCast(SWIG_OK);
+    } else {
+      PyErr_Clear();
+    }
+    if (!dispatch) {
+      long v = PyLong_AsLong(obj);
+      if (!PyErr_Occurred()) {
+	if (val) *val = v;
+	return SWIG_AddCast(SWIG_AddCast(SWIG_OK));
+      } else {
+	PyErr_Clear();
+      }
+    }
+  }
+#endif
+  return res;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+SWIGINTERN PyObject *_wrap_test(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":test")) SWIG_fail;
+  test();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_sumArr(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double *arg1 = (double *) 0 ;
@@ -3732,12 +3790,51 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_modArr2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double *arg2 = (double *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  int arg5 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyArrayObject *array2 = NULL ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:modArr2",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "modArr2" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  {
+    array2 = obj_to_array_no_conversion(obj1, NPY_DOUBLE);
+    if (!array2 || !require_dimensions(array2,3) || !require_contiguous(array2) ||
+      !require_native(array2)) SWIG_fail;
+    arg2 = (double*) array_data(array2);
+    arg3 = (int) array_size(array2,0);
+    arg4 = (int) array_size(array2,1);
+    arg5 = (int) array_size(array2,2);
+  }
+  result = (double)modArr2(arg1,arg2,arg3,arg4,arg5);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
+	 { (char *)"test", _wrap_test, METH_VARARGS, NULL},
 	 { (char *)"sumArr", _wrap_sumArr, METH_VARARGS, NULL},
 	 { (char *)"sumArr2", _wrap_sumArr2, METH_VARARGS, NULL},
 	 { (char *)"sumArr3", _wrap_sumArr3, METH_VARARGS, NULL},
 	 { (char *)"modArr", _wrap_modArr, METH_VARARGS, NULL},
+	 { (char *)"modArr2", _wrap_modArr2, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

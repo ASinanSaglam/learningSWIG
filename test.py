@@ -96,6 +96,10 @@ except __builtin__.Exception:
     _newclass = 0
 
 
+def test():
+    return _test.test()
+test = _test.test
+
 def sumArr(arr):
     return _test.sumArr(arr)
 sumArr = _test.sumArr
@@ -111,6 +115,10 @@ sumArr3 = _test.sumArr3
 def modArr(arr):
     return _test.modArr(arr)
 modArr = _test.modArr
+
+def modArr2(testvar, arr):
+    return _test.modArr2(testvar, arr)
+modArr2 = _test.modArr2
 # This file is compatible with both classic and new-style classes.
 
 
